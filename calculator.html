@@ -1,0 +1,981 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Simple calculator application -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculator</title>
+    <style>
+        body {
+            background-color: #7cbe6b;
+            display: flex;
+            height: 100vh;
+            align-items: flex-start;
+            margin: 0;
+            justify-content: center;
+        }
+        p {
+            font-size: 27px;
+            font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+        }
+
+        button {
+            background-color: #2f2f2f;
+            border-radius: 6px;
+            text-align: center;
+            justify-content: center;
+            line-height: 25px;
+            color: white;
+            margin: 20px;
+            display: block;
+            height: 90px;
+            width: 300px;
+        }
+        button:hover{
+            background-color: #202020;
+            color: antiquewhite;
+        }
+        #numericKeyboard{
+            border: 2px solid black;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            height: 700px;
+            width: 500px;
+            background-color: #a7df91;
+            border-radius: 7px;
+        }
+        #operationKeyboard{
+            border: 2px solid black;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            height: 700px;
+            width: 500px;
+            margin: auto;
+            background-color: #a7df91;
+            border-radius: 7px;
+        }
+        .numButton{
+            height: 100px;
+            width: 120px;
+            margin: 10px;
+            background-color: #88ce75;
+            border-radius: 6px;
+            text-align: center;
+            line-height: 100px;
+            color: black;
+            font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            
+            font-size: 40px;
+        }
+        .numButton:hover{
+            background-color: #5fa54f;
+            color: antiquewhite;
+        }
+
+        .leftAlign{
+            float: left;
+            padding: 10px;
+            margin: 10px;
+        }
+        .rightAlign{
+            float: right;
+            padding: 10px;
+            margin: 10px;
+        }
+        .centerAlign{
+            float: center;
+            padding: 10px;
+            margin: 10px;
+        }
+        .opButton{
+            height: 100px;
+            width: 120px;
+            margin: 10px;
+            color: black;
+            border-radius: 6px;
+            text-align: center;
+            line-height: 100px;
+            font-size: 40px;
+            background-color: #88ce75;
+            font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .opButton:hover{
+            background-color: #5fa54f;
+            color: antiquewhite;
+        }
+        .tiltButtons{
+            background-color: #a0a0a0;
+            border-radius: 6px;
+            text-align: center;
+            font-size: large;
+            justify-content: center;
+            line-height: 45px;
+            margin: 20px;
+            color: black;
+            display: block;
+            height: 140px;
+            width: 300px;
+        }
+        .tiltButtons:hover{
+            background-color: #808080;
+            color: antiquewhite;
+        }
+        .equalsClass{
+            background-color: #404040;
+            height: 100px;
+            width: 120px;
+            margin: 10px;
+            border-radius: 6px;
+            text-align: center;
+            color: white;
+            line-height: 50px;
+            font-size: 70px;
+            font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .equalsClass:hover{
+            background-color: #323232;
+            color: #fce183;
+            
+        }
+        .resultsTab{
+            border: 1px solid black;
+            height: 313px;
+            width: 350px;
+            border-radius: 6px;
+            text-align: center;
+            background-color: #a7df91;
+            line-height: normal;
+            font-size: 40px;
+            flex-direction: column;
+            font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow-wrap: break-word;
+            overflow: auto;
+            white-space: normal;
+            padding: 20px;
+            box-sizing: border-box;
+            display: block;
+            padding-top: 20px;
+        }
+
+        .operationsTab{
+            border: 1px solid black;
+            height: 120px;
+            width: 350px;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            line-height: normal;
+            background-color: #619a53;
+            font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow-wrap: break-word;
+            white-space: normal;
+            flex-direction: column;
+            padding: 20px;
+            color: #fcf6d2;
+            font-size: 45px;
+            box-sizing: border-box;
+            border-radius: 6px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div id="numericKeyboard" style="display:none;"></div>
+    <div id="operationKeyboard" style="display:none;"></div>
+    <script>
+            var inputOperation = false;
+            var negatingNum = 0;
+            var Num1 = "";
+            var Num2 = "";
+            //var result = "";
+            var negativeConverter = 0;
+            var Op = 0;
+            var trigger = 0;
+            var genericCondition = 0;
+            // Trigger = 1 --> Dividing by 0
+            // Trigger = 2 --> Float value inserted
+            // Trigger = 3 --> Factorial activator
+  function addButton(){
+            alert("Activating numeric keyboard...");
+            getNumeric.style.display = "none";
+            results.style.display = "flex";
+            (document.getElementById("AnswerHere")).style.display = "flex";
+            var numeric = document.getElementById("numericKeyboard");
+            numeric.style.display = "flex";
+
+            (document.getElementById("results").textContent) = '';
+
+                var b1 = document.createElement("button");
+                b1.textContent = "1";
+                b1.classList.add("numButton");
+                numeric.appendChild(b1);
+                var b1v = 1;
+                b1.onclick = function sum(){
+                    if(Op == 0){
+                        Num1 += b1v;
+                        showNumber(Num1);
+                    }
+                    else{
+                        
+                        Num2 += b1v;
+                        showNumber(Num2);
+                    }
+                }
+
+
+                var b2 = document.createElement("button");
+                b2.textContent= "2";
+                b2.classList.add("numButton");
+                numeric.appendChild(b2);
+                var b2v = 2;
+                b2.onclick = function sum(){
+                    if(Op == 0){
+                        Num1 += b2v;
+                        showNumber(Num1);
+                    }
+                    else{
+                        
+                        Num2 += b2v;
+                        showNumber(Num2);
+                    }
+                    
+                }
+
+                var b3 = document.createElement("button");
+                b3.textContent = "3";
+                b3.classList.add("numButton");
+                numeric.appendChild(b3);
+                var b3v = 3;
+                b3.onclick = function sum(){
+                    if(Op == 0){
+                        Num1 += b3v;
+                        showNumber(Num1);
+                    }
+                    else{
+                        
+                        Num2 += b3v;
+                        showNumber(Num2);
+                    }
+                }
+
+                var b4 = document.createElement("button");
+                b4.textContent = "4";
+                b4.classList.add("numButton");
+                numeric.appendChild(b4);
+                var b4v = 4;
+                b4.onclick = function sum(){
+                    if(Op == 0){
+                        Num1 += b4v;
+                        showNumber(Num1);
+                    }
+                    else{
+                        
+                        Num2 += b4v;
+                        showNumber(Num2);
+                    }
+                }
+                var b5 = document.createElement("button");
+                b5.textContent = "5";
+                b5.classList.add("numButton");
+                numeric.appendChild(b5);
+                var b5v = 5;
+                b5.onclick = function sum(){
+                    if(Op == 0){
+                        Num1 += b5v;
+                        showNumber(Num1);
+                    }
+                    else{
+                        
+                        Num2 += b5v;
+                        showNumber(Num2);
+                    }
+                }
+                var b6 = document.createElement("button");
+                b6.textContent = "6";
+                b6.classList.add("numButton");
+                numeric.appendChild(b6);
+                var b6v = 6;
+                b6.onclick = function sum(){
+                    if(Op == 0){
+                        Num1 += b6v;
+                        showNumber(Num1);
+                    }
+                    else{
+                        
+                        Num2 += b6v;
+                        showNumber(Num2);
+                    }
+                }
+                var b7 = document.createElement("button");
+                b7.textContent = "7";
+                b7.classList.add("numButton");
+                numeric.appendChild(b7);
+                var b7v = 7;
+                b7.onclick = function sum(){
+                    if(Op == 0){
+                        Num1 += b7v;
+                        showNumber(Num1);
+                    }
+                    else{
+                        
+                        Num2 += b7v;
+                        showNumber(Num2);
+                    }
+                }
+                var b8 = document.createElement("button");
+                b8.textContent = "8";
+                b8.classList.add("numButton");
+                numeric.appendChild(b8);
+                var b8v = 8;
+                b8.onclick = function sum(){
+                    if(Op == 0){
+                        Num1 += b8v;
+                        showNumber(Num1);
+                    }
+                    else{
+                        
+                        Num2 += b8v;
+                        showNumber(Num2);
+                    }
+                }
+                var b9 = document.createElement("button");
+                b9.textContent = "9";
+                b9.classList.add("numButton");
+                numeric.appendChild(b9);
+                var b9v = 9;
+                b9.onclick = function sum(){
+                    if(Op == 0){
+                        
+                        Num1 += b9v;
+                        showNumber(Num1);
+                    }
+                    else{
+                        
+                        Num2 += b9v;
+                        showNumber(Num2);
+                    }
+                }
+                var b0 = document.createElement("button");
+                b0.textContent = "0";
+                b0.classList.add("numButton");
+                numeric.appendChild(b0);
+                var b0v = 0;
+                b0.onclick = function sum(){
+                    if(Op == 0){
+                        if(Num1 != '0' || (trigger == 0.5 || trigger == 2 || trigger == 2.5)){
+                            Num1 += b0v;
+                            showNumber(Num1);
+                        }
+                    }
+                    else{
+                        if(Op == 4 && (parseFloat(Num2,10) == 0)){
+                            trigger = 1;
+                        }
+                        if(Num2 != '0' || (trigger == 0.5 || trigger == 2 || trigger == 2.5)){
+                            Num2 += b0v;
+                            showNumber(Num2);
+                        }
+                    }
+                    
+                }
+                var bfloat = document.createElement("button");
+                bfloat.textContent = "."; 
+                bfloat.classList.add("numButton");
+                numeric.appendChild(bfloat);
+                bfloat.onclick = function prsFloat(){
+                    if(trigger != 2.5){
+                        if(Op == 0){
+                            if(Num1 != ''){
+                                trigger = 2;
+                                Num1 += '.';
+                                showNumber(Num1);
+                            }
+                            else{
+                                trigger = 2;
+                                Num1 += '0.';
+                                showNumber(Num1);
+                            }
+                        }
+                        else{
+                            if(Num2 != ''){
+                                trigger += 0.5;
+                                Num2 += '.'
+                                showNumber(Num2);
+                            }
+                            else{
+                                trigger += 0.5;
+                                Num2 += '0.';
+                                showNumber(Num2);
+                            }
+                        }
+                }
+                }
+
+                var clear = document.createElement("button");
+                clear.textContent = "CE";
+                clear.classList.add("equalsClass");
+                clear.onclick = function clearing(){
+                    (document.getElementById("results")).style.fontSize = ("45px");
+                    Num1 = '';
+                    Num2 = '';
+                    trigger =0;
+                    Op = 0;
+                    result = '';
+                    negativeConverter = 0;
+                    inputOperation = false;
+                    negatingNum = 0;
+                    (document.getElementById("AnswerHere")).textContent = "";
+                    //showNumber(Num1);
+                    (document.getElementById("results")).textContent = ""
+                }
+                numeric.appendChild(clear);
+            }
+
+            
+            //////////////////////////////////////////////////////////////
+
+            function addOp(){
+                alert("Activating operations keyboard...");
+                results.style.display = "flex";
+                (document.getElementById("AnswerHere")).style.display = "flex";
+                var operation = document.getElementById("operationKeyboard");
+                getOp.style.display = "none"; //botão vai sumir pois outro vai intercalar o painel
+                var switcher = document.getElementById("switcher");
+                operation.style.display = "flex";
+                var turner = document.getElementById("turner");
+                turner.style.display = "flex";
+                turnOff();
+                //operation.style.backgroundColor = "#8FC1B5";
+                /////////// + ///////////
+                var plusB = document.createElement("button");
+                plusB.textContent = "+";
+                plusB.classList.add("opButton");
+                operation.appendChild(plusB);
+                plusB.onclick = function sum(Num1, Num2){
+                    if(operationLock() === 0){
+                    if(Num1 != ''){
+                        Op = 1;
+                        addOperator();
+                        (document.getElementById("AnswerHere")).textContent += "+";
+                        inputOperation = true;
+                        }
+                    }
+                }
+                /////////// - ///////////
+                var minusB = document.createElement("button");
+                minusB.textContent = "-";
+                minusB.classList.add("opButton");
+                operation.appendChild(minusB);
+                minusB.onclick = function minus(){
+                if(negatingNum <= 1){
+                    if(Num1 == ''){
+                      
+                        negativeConverter = 1;
+                        negatingNum++;
+                    }
+                    // Aqui, se o primeiro número ainda não foi digitado, o programa entende que o usuário
+                    // o está negativando.
+                    else{
+                        
+                        if((Op == 0) || (Op != 2)){
+
+                            if(negativeConverter == 1){
+                                
+                                negatingNum = 2;
+                                negativeConverter = -1;
+                            }
+                            else {
+                                negativeConverter = 3;
+                            }
+                        // Se o usuário ainda não inseriu nenhuma operação, ou se a operação inserida não foi
+                        // subtração, negativa o segundo número. Isso porque para chegar neste ponto, o prim-
+                        // eiro número já foi inserido.
+                        }
+                        else{
+                            
+                            negatingNum++;
+                        }
+                    }
+                    // Caso contrário, o usuário estaria negativando o segundo número, pois para chegar nesta
+                    // função, o usuário teria inserido o botão pelo menos uma vez.
+                    
+                    if(operationLock() === 0){
+                        if(Num1 != ''){
+                            Op = 1;
+                        }
+                    addOperator();
+
+                        
+                    if(Op !== 2){
+                        
+                    (document.getElementById("AnswerHere")).textContent += "-";
+                    inputOperation = true;
+                    }
+                
+            }
+        }
+                }
+                var timesB = document.createElement("button");
+                timesB.textContent = "x";
+                timesB.classList.add("opButton");
+                operation.appendChild(timesB);
+                timesB.onclick = function times(){
+                    if(Num1 != ''){
+                        if(operationLock() === 0){
+                        addOperator();
+                        (document.getElementById("AnswerHere")).textContent += "x";
+                        Op = 3;
+                        inputOperation = true;
+                    }
+                }
+            }
+                /////////// - ///////////
+                var overB = document.createElement("button");
+                overB.textContent = "÷";
+                overB.classList.add("opButton");
+                operation.appendChild(overB);
+                overB.onclick = function over(){
+                if(Num1 != ''){
+                        if(operationLock() === 0){
+                        addOperator();
+                        (document.getElementById("AnswerHere")).textContent += "÷";
+                        Op = 4;
+                        inputOperation = true;
+                    }
+                }
+                }
+                /////////// % ///////////
+                var partOf = document.createElement("button");
+                partOf.classList.add("opButton");
+                partOf.textContent = "%";
+                operation.appendChild(partOf);
+                partOf.style.display = "flex";
+                partOf.onclick = function(){
+                    if(Num1 != ''){
+                        if(operationLock() === 0){
+                            if(negatingNum == 0 && negativeConverter == 0){
+                            addOperator();
+                            Op = 6;
+                            inputOperation = true;
+                            (document.getElementById("AnswerHere")).textContent += "%";
+                            }
+                            else {
+                                alert("What is a negative percentage at all?");
+                            }
+                    }
+                }
+                }
+                                /////////// ^ ///////////
+                var powerB = document.createElement("button");
+                powerB.textContent = "aˣ";
+                powerB.classList.add("opButton");
+                operation.appendChild(powerB);
+                powerB.onclick = function(){
+                    if(Num1 != ''){
+                        if(operationLock() === 0){
+                            addOperator();
+                            Op = 5;
+                            inputOperation = true;
+                            (document.getElementById("AnswerHere")).textContent += "^";
+                    }
+                }
+            }
+                var factOper = document.createElement("button");
+                factOper.classList.add("opButton");
+                factOper.textContent = "n!";
+                operation.appendChild(factOper);
+                factOper.style.display = "flex";
+                factOper.onclick = function(){
+                    
+                    if(Op == 0 && Num1 != ''){
+                        trigger = 3;
+                        
+                    }
+                        
+                        if(Num1 != ''){
+                            // genericCondition++;
+                            (document.getElementById("AnswerHere")).textContent += "!";
+                            if(Op == 0){
+                                trigger += 0.1;
+                            }
+                                
+                        if(Op != 0 && Num2 != ''){
+                                // genericCondition++;
+                                if(trigger == 3 || trigger == 0){
+                                    (document.getElementById("AnswerHere")).textContent += "!";
+                                }
+                                if(trigger == 0){
+                                    trigger = 3.2;
+                                }
+                                else if(trigger == 3.1){
+                                    trigger += 3.3;
+                                }
+
+                            }   
+                    }
+            }
+
+
+                var piNumber = document.createElement("button");
+                piNumber.textContent = "π";
+                var piv = 3.14159;
+                piv = piv.toFixed(5);
+                parseFloat(piv, 10);
+                piNumber.classList.add("opButton");
+                operation.appendChild(piNumber);
+                piNumber.onclick = function(){
+                    if (Op == 0) {
+                        Num1 = piv; 
+                        showNumber(Num1);
+                        trigger = 2.5;
+                    } else {
+                        Num2 = piv; 
+                        showNumber(Num2);
+                        trigger = 2.5;
+                    }
+                }
+                var eButton = document.createElement("button");
+                eButton.classList.add("opButton");
+                eButton.textContent = "𝐞"
+                var euler = 2.71828;
+                euler = euler.toFixed(5);
+                parseFloat(euler, 10);
+                operation.appendChild(eButton);
+                eButton.style.display = "flex";
+                eButton.onclick = function(){
+                    if (Op == 0) {
+                        Num1 = euler; 
+                        showNumber(Num1);
+                        trigger = 2.5;
+                    } else {
+                        Num2 = euler; 
+                        showNumber(Num2);
+                        trigger = 2.5;
+                    }
+                }
+
+                /////////// = ///////////
+                var equalsB = document.createElement("button");
+                equalsB.textContent = "=";
+                equalsB.classList.add("equalsClass");
+                operation.appendChild(equalsB);
+                equalsB.onclick = function (){
+                    equals(Num1, Num2, Op);
+                }
+
+
+                //Void buttons here
+
+                
+
+                
+                var void3 = document.createElement("button");
+                void3.classList.add("opButton");
+
+                var icon = document.createElement("img");
+                icon.src = "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c2/GitHub_Invertocat_Logo.svg/180px-GitHub_Invertocat_Logo.svg.png";
+                icon.width = 120;
+                icon.height = 100; 
+                
+                void3.appendChild(icon);
+                void3.style.display = "flex";
+                
+                var link = document.createElement("a");
+                link.href = "https://github.com/Fabricio-Krull";
+                link.target = "_blank";
+                
+                link.appendChild(void3);
+
+                // operation.appendChild(void3);
+                operation.appendChild(link);
+                
+                void3.onclick = function(){
+
+                }
+                /*
+
+
+                var void6 = document.createElement("button");
+                void6.classList.add("opButton");
+                operation.appendChild(void6);
+                void6.style.display = "flex";
+                */
+
+            }
+
+            function turnOn(){
+                
+                switcher.onclick = function showGrid(){
+                    var operation = document.getElementById("operationKeyboard");
+                    var switcher = document.getElementById("switcher");
+                    operation.style.display = "flex";
+                    switcher.style.display = "none";
+                    turner.style.display = "flex";
+                }
+            }
+            function turnOff(){
+              
+                turner.onclick = function hideGrid(){
+                    var operation = document.getElementById("operationKeyboard");
+                    var turner = document.getElementById("turner");
+                    operation.style.display = "none";
+                    turner.style.display = "none";
+                    switcher.style.display = "flex";
+                }
+            }
+            function equals(Num1, Num2, Op){
+                    if (trigger == 6.4){
+                        trigger = 3.3;
+                    }
+                if(Num2 == 0 && Op == 4){
+                    if((parseFloat(Num1, 10)) !== (parseInt(Num1, 10))){
+                       
+                        var Num1Int = parseFloat(Num1, 10);
+                        
+                        var Num2Int = 0;
+                    }
+                    trigger = 1;
+                }
+                if(negativeConverter == 1){
+                    Num1 *= -1;
+                }
+                else if (negatingNum >= 2){
+                  
+                    Num1 *= -1;
+                    Num2 *= -1; 
+                }
+                else if (negativeConverter == 3){
+                    Num2 *= -1;
+                }
+
+                if((trigger != 0.5 && trigger != 2.5 && trigger != 2 && Num1Int == '') || (trigger == 0)){
+                    var Num1Int = parseInt(Num1, 10);
+                    var Num2Int = parseInt(Num2, 10);
+                    
+                }
+                else if (trigger == 2.5){
+                    var Num1Int = parseFloat(Num1, 10);
+                    var Num2Int = parseFloat(Num2, 10);
+                   
+                }
+                else if (trigger == 2){
+                    var Num1Int = parseFloat(Num1, 10);
+                    var Num2Int = parseInt(Num2, 10);
+                    
+                }
+                else if (trigger == 0.5){
+                    var Num1Int = parseInt(Num1, 10);
+                    var Num2Int = parseFloat(Num2, 10);
+                    
+                }
+
+                if (trigger >= 3 && trigger < 4){
+                    if(trigger == 3.3){
+                
+                        Num1Int = parseFloat(factorial(Num1), 10);
+                        Num2Int = parseFloat(factorial(Num2), 10);
+                        Num1 += "!";
+                        Num2 += "!";
+                    }
+                    else if (trigger == 3.1){
+                 
+                        Num1Int = parseFloat(factorial(Num1), 10);
+                        Num1 += "!";
+                        Num2Int = parseInt(Num2, 10);
+                    }
+                    else if(trigger == 3.2){
+                      
+                        Num2Int = parseFloat(factorial(Num2), 10);
+                        Num2 += "!";
+                        Num1Int = parseInt(Num1, 10);
+                    }
+
+                   
+                }
+                let result = '';
+               
+                if(Op == 0 && trigger >= 3 && trigger < 4){
+                    if(Num1 < 0){
+                        alert("Num1 = " + Num1);
+                       Num1Int *= -1;
+                    }
+                    result = Num1Int;
+                    (document.getElementById("AnswerHere")).textContent = Num1 + "!";
+                }
+                else if (Op == 1) {
+                    if(trigger == 3.3 && negativeConverter == 3){
+                        result = Num1Int + (Num2Int*-1);  
+                    }
+                    else{
+                        result = Num1Int + Num2Int;
+                    }
+                    if(negativeConverter == 3){
+                          (document.getElementById("AnswerHere")).textContent = Num1 + " " + Num2;
+                    }
+                else if(negativeConverter == 1){
+                    
+                        (document.getElementById("AnswerHere")).textContent = Num1 + " + " + Num2;
+                    }
+                else if (negativeConverter == 0){
+                 
+                        (document.getElementById("AnswerHere")).textContent = Num1 + " + " + Num2;
+                    }
+                else if (negatingNum == 2){
+                   
+                    (document.getElementById("AnswerHere")).textContent = Num1 + " " + Num2;
+                }
+                } else if (Op == 3) {
+                  
+                        result = Num1Int * Num2Int;
+                        (document.getElementById("AnswerHere")).textContent = Num1 + " x " + Num2;
+                } else if (Op == 4) {
+                   
+                        result = Num1Int / Num2Int;
+                        (document.getElementById("AnswerHere")).textContent = Num1 + " ÷ " + Num2;
+                    }
+                else if (Op == 5){
+                   
+                        result = toThePowerOf(Num1Int, Num2Int);
+                        (document.getElementById("AnswerHere")).textContent = Num1 + " ^ " + Num2;
+                    }
+                else if (Op == 6){
+                        result = (Num2Int * Num1Int)/100;
+                        (document.getElementById("AnswerHere")).textContent = Num1 + "% of " + Num2;
+                }
+                        Op = 0;
+                        document.getElementById("results").style.display = "flex";
+                        (document.getElementById("results")).textContent = result;
+                        Num1 = result;
+                if(trigger == 1){
+                        (document.getElementById("results")).textContent = "Cannot divide by 0!";
+                    }
+
+                    
+                   // alert("Op = " + Op + " Num1 = " + Num1 + " result = " + result);
+                    negatingNum = 0;
+                    trigger = 0;
+                    Num1Int = '';
+                    Num2Int = '';
+                    negativeConverter = 0;
+            }
+            function showNumber(Number){
+                var showThis = document.getElementById("AnswerHere");
+                if (Op === 0) {
+                    
+                    showThis.textContent = Number; 
+                } else {
+                    
+                    showThis.textContent += Num2;
+                }
+                if(negativeConverter > 0 && negativeConverter != 1){
+                    
+                    showThis.textContent = '- ' + Number;
+                }
+                else{
+                showThis.textContent = Number;
+                }
+
+            }
+            function switchToNum2(Num2, X){
+                if(Op > 0){
+                    Num2 += X;
+                    showNumber(Num2);
+                    inputOperation = false;
+                }
+            }
+            function addOperator(){
+            
+                var Num1Int = parseInt(Num1, 10);
+                var showThis = document.getElementById("AnswerHere");
+           }
+           function toThePowerOf(Num1, Num2){
+            var power = 0;
+            if (Num2 > 0){
+                for(var i = 1; power < Num2; power++){
+                    i *= Num1;
+                }
+                return i;
+            }
+            else if (Num2 < 0){
+                Num2 *= -1;
+                for(var i = 1; power < Num2; power++){
+                    i *= Num1;
+                }
+                return 1/i;
+            }
+            else{
+                return 1;
+            }alert
+           }
+           function operationLock(){
+            var lock = 0;
+                if (Op != 0 && inputOperation){
+                    
+                    if ((Op > 0 && inputOperation)){
+                        if(negativeConverter == 0 || negatingNum > 0){
+                            alert("Operator inserted already!");
+                        }
+                    }
+                        lock = 1;
+                }
+                return lock;
+           }
+           function factorial(Number){
+                
+                cmp = Number;
+                if(Number > 0){
+                    for(var i = 1; cmp >= 1; cmp--){
+                        i *= cmp;
+                        //
+                    }
+                    return i;
+                }
+                else {
+                    cmp *= -1;
+                    for(var i = 1; cmp >= 1; cmp--){
+                        i *= cmp;
+                    }
+                    if(trigger == 3.1){
+                        return -i;
+                           
+                    }
+                    else{
+                        if(negatingNum >= 1){
+                            return -i;
+                        }
+                        else{
+                            return i;
+                        }
+                    }
+                }
+           }
+            
+    </script>
+    <div class="centerAlign">
+    <div class="numericKeyboard" class="leftAlign">
+        <button class="parentBox" onclick="addButton()" id="getNumeric" class="leftAlign">
+            <p>Enable Numeric Keyboard</p>
+        </button>
+    </div>
+
+    <div class="operationKeyboard" class="rightAlign">
+            <button class="parentBox" onclick="addOp()" id="getOp" class="rightAlign" >
+                <p>Enable Operations Keyboard</p>
+            </button>
+            <button id ="switcher" style="display: none;" onclick="turnOn()" class="tiltButtons" class="centerAlign">
+                <p>Enable operations keyboard </p>
+            </button>
+            <button id="turner" style="display: none;" onclick="turnOff()" class="tiltButtons" class="centerAlign">
+                <p>Disable operations keyboard </p>
+            </button>
+    </div>
+            <table class="resultsTab" style="display: none;" id="results">
+                <p></p>
+                <p id="AnswerHere" class="operationsTab" ></p>
+            </table>
+    </div>
+    
+</body>
+</html>
