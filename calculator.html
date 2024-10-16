@@ -189,13 +189,13 @@
             var negatingNum = 0;
             var Num1 = "";
             var Num2 = "";
-            var negativeConverter = 0;
             var Op = 0;
             var trigger = 0;
             // Trigger = 1 --> Dividing by 0
             // Trigger = 2 --> Float value inserted
             // Trigger = 3 --> Factorial activator
   function addButton(){
+            cleaner();
             alert("Activating numeric keyboard...");
             getNumeric.style.display = "none";
             results.style.display = "flex";
@@ -414,19 +414,8 @@
                 var clear = document.createElement("button");
                 clear.textContent = "CE";
                 clear.classList.add("equalsClass");
-                clear.onclick = function clearing(){
-                    (document.getElementById("results")).style.fontSize = ("45px");
-                    Num1 = '';
-                    Num2 = '';
-                    trigger =0;
-                    Op = 0;
-                    result = '';
-                    negativeConverter = 0;
-                    inputOperation = false;
-                    negatingNum = 0;
-                    (document.getElementById("AnswerHere")).textContent = "";
-                    //showNumber(Num1);
-                    (document.getElementById("results")).textContent = ""
+                clear.onclick = function(){
+                    cleaner();
                 }
                 numeric.appendChild(clear);
             }
@@ -722,6 +711,19 @@
                     turner.style.display = "none";
                     switcher.style.display = "flex";
                 }
+            }
+            function cleaner(){
+                (document.getElementById("results")).style.fontSize = ("45px");
+                    Num1 = '';
+                    Num2 = '';
+                    trigger =0;
+                    Op = 0;
+                    result = '';
+                    negativeConverter = 0;
+                    inputOperation = false;
+                    negatingNum = 0;
+                    (document.getElementById("AnswerHere")).textContent = "";
+                    (document.getElementById("results")).textContent = ""
             }
             function equals(Num1, Num2, Op){
                     if (trigger == 6.4){
